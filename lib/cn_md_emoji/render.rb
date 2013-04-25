@@ -23,12 +23,19 @@ module CnMdEmoji
         emoji_code = emoji
         emoji      = emoji_code.gsub(/[\[\]]/, "")
 
-        emoji = CnMdEmoji::CN_EN[emoji] if CnMdEmoji::CN_MOJI.include?(emoji)
+        filename = nil
+
+        if CnMdEmoji::CN_MOJI.include?(emoji)
+          emoji = CnMdEmoji::CN_EN[emoji] 
+          file_name    = "#{emoji}.gif"
+        end
 
         if CnMdEmoji::EMOJI.include?(emoji)
-          file_name    = "#{emoji}.gif"
-          default_size = %{height="22" width="22"}
+          file_name    = "#{emoji}.png"
+        end
 
+        if file_name
+          default_size = %{height="22" width="22"}
           %{<img src="/assets/emojis/#{file_name}" class="emoji" } +
             %{title="#{emoji_code}" alt="#{emoji_code}" #{default_size}>}
         else
